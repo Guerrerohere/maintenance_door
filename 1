@@ -1,0 +1,435 @@
+<meta charset="utf-8">
+<title>$TITLE$ - $SITE_NAME$</title>
+<link type="text/css" rel="stylesheet" href="/_st/my.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.5, user-scalable=1" />
+<link type="text/css" rel="StyleSheet" href="/fonts/iconic_fill.css" />
+<?if($PAGE_ID$=='checkout')?><link href="/suggestions.css" type="text/css" rel="stylesheet" /><?endif?>
+
+
+<style>
+#tb_warr, #tb_unit, #tb_brand, #tb_meta, #invoice-form-export, #invoice-form-send-el-goods {display:none}
+.manTdSep {height:1px !important; font-size:0}
+#idAreaoEditdscr {height:100px !important}
+#goodsform table div {text-align:left}
+#goodsform div {text-align:center}
+
+/* костыль для блока изображений в редактировании товара. Изменить или удалить, если что не так */
+#goodsform #image-list { overflow: auto; height: 450px; }
+#goodsform #image-list .add-image-label { position: absolute; inset: 0; }
+#goodsform #image-list .inner { height: 220px; width: 220px; overflow: hidden }
+#goodsform #image-list .inner input { font-size: 0; margin: 0; height: 0}
+#goodsform #image-list .inner div {top: 0}
+#goodsform #image-list .inner p {position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; text-align: center;}
+#goodsform #image-list .image-alt-title-wrapper { display: none }
+
+#cont-shop-checkout {clear:both}
+
+#invoice-table td {padding:0 5px}
+#invoice-table tr:hover .forumNameTd, #invoice-table tr:hover .forumIcoTd {background-image: linear-gradient(to top, rgba(255,255,255,0.8), rgba(255,255,255,0), rgba(255,255,255,0), rgba(255,255,255,0.8))}
+
+.col_status {padding:0!important; width:110px !important}
+.col_status a {text-decoration:none; font-family:Arial Narrow}
+.col_status select {width:100px; font-family:Arial Narrow}
+.col_payment_id {width:110px}
+.col_payment_id small a {text-decoration:none; fo1nt-size:11px;}
+.col_fld4 {font-size:12px}
+.col_fld6, .col_fld10 {font-size:11px}
+.col_fld6 {width:1% !important}
+.methods-list input[type="radio"] {width:15px; height:15px; box-shadow:none; font-size:20px;}
+.col_payment_id td {padding:0}
+.col_amount small {color:#888}
+.col_note {width:100px !important;}
+.pay_button {display:none}
+.col_user .user {max-width:80px; display: inline-block; overflow:hidden; font-size:12px}
+
+.col_checkbox {padding:0 !important}
+.col_checkbox .sel {height:22px; width:22px; margin:0; vertical-align:middle; background:#fff; border:1px solid #999}
+
+#order-fld-1 {font-size:20px;}
+#order-fld-4 {font-size:18px;}
+#order-fld-11 {font-size:18px;}
+#order-fld-12 {font-size:18px;}
+#order-fld-5 {margin:0; vertical-align:middle; height:100px;}
+
+#order-fld-9, #order-fld-10 {width:270px;} 
+#order-fld-2 {width:163px;}
+#order-fld-8 {width:291px;}
+#order-fld-18 {width:53px;}
+#order-fld-19 {width:35px;}
+#order-fld-13,#order-fld-16 {width:55px;}
+#order-fld-15 {width:26px; height:26px; vertical-align:middle;}
+label {vertical-align:middle;}
+
+#invoice-form, #invoices_buttons {padding:5px !important; margin-bottom:5px; background:#CBCBCB; border-radius:2px; width:100% !important; box-sizing:border-box; -moz-box-sizing:border-box;}
+.opt_vals {border-spacing:0 !important}
+.opt_vals td {padding:0 6px!important}
+.opt_vals tr:hover {background: #e4e4e4}
+.opt_vals label, .opt_items {font-size:13px !important;}
+
+#dscr {height:100px !important;}
+
+<?if($USER_ID$=='3')?>body {background-image:none !important}<?endif?>
+
+
+.t-button2 {display:inline-block; padding:4px 10px !important; border:0px solid rgba(0,0,0,0.4); text-decoration:none; cursor:pointer; background:#A267AD; color:#fff}
+.t-button2:link, .t-button2:visited {} 
+.t-button2:hover { background:#B48EBC; color:#fff} 
+
+.opt_vals input[type=text] {width:80px;}
+.opt_vals input[type=checkbox] {width:20px; height:20px;}
+
+#suggEdit {width:auto!important}
+</style>
+
+<script>
+//переопределение встроенной функции. Очень осторожно.
+_shopFadeControl = function(id, pos, obj){
+ var el = (typeof(obj) == 'object') ? obj : $('#'+id);
+ var top = 0;
+ var left = 0;
+ if(pos && el.length){
+ top = el.position().top;
+ left = el.position().left;
+ }
+ if(el.length){
+ var g=document.createElement("div");
+ var height = $(el).height();
+ var scrollHeight = $(el)[0].scrollHeight;
+ if(height < scrollHeight){
+ height = scrollHeight;
+ }
+ $(g).addClass('myWinGrid').addClass('shop-fade').attr("id",id+'-fade').css({"left":left,"top":top,"position":"absolute","border":"#CCCCCC 1px solid","width":$(el).width()+'px',"height":height+'px',"z-index":11}).hide().bind('mousedown',function(e){e.stopPropagation();e.preventDefault();_uWnd.globalmousedown();}).html('<div class="myWinLoad" style="margin:5px;"></div>');
+ $(el).append(g);
+ $(g).show();
+ 
+ $('#'+id).addClass('rld');
+ setTimeout(function() { prints(); }, 1000); 
+ }
+}
+</script>
+
+
+<div class='layout2'>$GLOBAL_GENERAL$
+<div class='content2' style='padding:<?if($PAGE_ID$=='invoices')?>10<?else?>15<?endif?>px;' id="cont-$MODULE_ID$-$PAGE_ID$">
+
+<!-- <body> -->
+<?if($PAGE_ID$=='invoices')?>
+
+<div style='overflow:hidden'><table class='adaptive2' style='margin:0 0 5px 0;' cellpadding="0" cellspacing="0" width="100%"><tr>
+<td style='font-size:12px; line-height:110%; color:#888' valign=middle>Всего: $NUM_ENTRIES$ на сумму <b>$TOTAL$</b><?if($PROFIT$)?> | Прибыль: <b>$PROFIT$</b><?endif?>
+<td width=1% style='padding-right:10px;'><nobr>
+<?if($GROUP_ID$=='4')?>
+<button class='green-button' id='colored'><b class='ic brush'></b></button><?endif?></nobr>
+<td width=1% align=right><nobr>Статус: $STATUS_SELECTOR$ $ARCHIVE_SELECTOR$
+<button style='margin:0' class='dfg' onclick="$('.dfg ').toggle(); $('#invoices_buttons').show(300); $('#invoice-form').show(300);">ещё ↓</button>
+<button style='margin:0;display:none' class='dfg' onclick="$('.dfg ').toggle(); $('#invoices_buttons').hide(300); $('#invoice-form').hide(300);">ещё ↑</button>
+</nobr>
+</tr></table></div>
+
+
+<div id='invoices_buttons' style=''>
+<table style='margin-bottom:10px;' border="0" cellpadding="0" cellspacing="0" width="100%"><tr>
+<td>$DATE_SELECTOR$
+<td width="1%" align="right" nowrap>$USER_SELECTOR$
+</tr></table>
+$PAYMENT_SELECTOR$ $DELIVERY_SELECTOR$
+</div>
+<?endif?>
+
+<?if($PAGE_ID$=='price')?>
+<?if($NUM_PAGES$>1)?><div style="text-align:right; padding-bottom:3px;"><!--<s3015>-->Страницы<!--</s>-->: $PAGE_SELECTOR$</div><?endif?>
+<form id="shop-price-form" action="" onsubmit="return price2Basket()">
+<input type="hidden" name="mode" value="grp-add">
+<table class="gTable" width="100%" border="0" cellspacing="1" cellpadding="2">
+<tr><td class="gTableTop">Наименование</td><td class="gTableTop" width="1%">Цена</td><td class="gTableTop" width="1%">Количество</td></tr>
+<?endif?>
+
+
+<?if($PAGE_ID$=='checkout')?>
+<h1>Оформление заказа</h1>
+
+<?if(!$USER_LOGGED_IN$)?>
+<style>
+.guest_q {background:rgba(121,147,77,1); margin:0 0 30px 0; padding:15px; box-sizing:border-box; color:white}
+.guest_q h2 {margin:0 0 10px 0; line-height:1; font-size:28px;}
+.guest_q a {display:inline-block; padding:4px 10px; border:1px solid rgba(255,255,255,0.6); text-decoration:none; margin-top:15px;}
+.guest_q a:link, .guest_q a:visited {color:#fff} 
+.guest_q a:hover {background:rgba(255,255,255,0.1)} 
+
+@media screen and (max-width: 550px) {
+
+}
+
+@media screen and (max-width: 400px) {
+
+}
+</style>
+
+<div class='guest_q'>
+<h2 class='think1'>Привет, Гость</h2>
+
+Возможно, Вам стоит зарегистрироваться или авторизоваться на сайте.
+
+<br><a href='javascript://' get='
+
+<h3>Чем полезна регистрация?</h3>
+
+Она позволит:
+<ul>
+<li>иметь возможность оплатить заказ при получении;
+<li>случайно не потерять доступ к информации о заказе;
+<li>хранить все заказы в одном месте;
+<li>стать постоянным клиентом;
+</ul>
+<hr>
+Так же, Вы можете продолжить оформление заказа Гостем,<br>тогда регистрация произойдет автоматически*.<br>В этом случае, регистрационные данные будут высланы<br>Вам на указанный E-mail.
+<br><br>* ненадёжный способ регистрации,<br>так как данные для входа легко потерять. 
+'>Зачем?</a> <a href="$LOGIN_LINK$">Авторизация</a>
+
+</div>
+
+<?endif?>
+
+
+<div style='width:100% !important;'>
+
+<a target=_blank href='/faq/6-1' class="step-help"><span class=question>?</span> О товарах</a>
+<a target=_blank href='/publ/1-1-0-7' class="step-help"><span class=question>?</span> О сроках</a>
+<div class="step-h">Шаг 1. Заказанные товары</div>
+
+<div class="step-b step1">
+<?endif?>
+
+$BODY$
+
+<?if($PAGE_ID$=='price')?>
+</table>
+<div style="text-align:center; padding:10px;"><input type="submit" class="pinput" value="Добавить в корзину"> <input type="button" class="pinput" onclick="location.href='/shop/checkout'" value="Оформить заказ"></div>
+</form>
+<?endif?>
+
+<?if($PAGE_ID$=='checkout')?>
+<?if(!$DELIVERY_LIST$)?>
+Ваша корзина пуста. <a class="button" href="$HOME_PAGE_LINK$">Вернуться в каталог</a><?endif?>
+</div>
+
+<div id='invoices-warn1'></div>
+
+<?if($NUM_ENTRIES$)?>
+<form id="checkout-form" method="POST" action="" class="" onsubmit="return shopCheckOut();">
+
+<div class='wishes'>
+<div class="step-h">Шаг 1.1. Пожелания к заказу</div>
+<div class="step-b step11" style='padding:5px'>
+<table class='adaptive' width=100% cellspacing=0><tr>
+<td style='padding:0' >$ORDER_FIELD_5$
+<td style='padding:0; width:10px'>
+<td style='padding:10px 0; width:259px'><nobr>При необходимости,</nobr> <nobr>укажите в этом поле</nobr> <nobr>пожелания к заказу.</nobr>
+</tr></table>
+</div>
+</div>
+
+<table width=100% cellspacing=0 cellpadding=0 class='adaptive'><tr><td width=80%>
+
+<a target=_blank href='/faq/5-1' class="step-help"><span class=question>?</span> О доставке</a>
+<div class="step-h">Шаг 2. Доставка</div>
+<div class="step-b step2">$DELIVERY_LIST$</div>
+
+<a target=_blank href='/faq/4-1' class="step-help"><span class=question>?</span> Об оплате</a>
+<div class="step-h">Шаг 3. Оплата</div>
+<div class="step-b step3">$PAYMENT_LIST$
+
+<div id='promo-block'>
+<span class='order-field'>$ORDER_FIELD_6$</span>
+<span class='methods-list' style='margin-top:6px;display:block; line-height:1.4'>Купоны на скидку (промо-коды) можно найти в рекламных сообщениях вКонтакте, получить в подарок или иным способом.
+<br>При правильном вводе код может дать скидку на заказ.</span>
+</div>
+</div>
+
+<td rowspan=2 valign="middle" width=1%>
+<div class="payment-block">
+
+<span class='step-b-block'>Сумма заказа:</span><span class='step-b-cost ic'>$ORDER_AMOUNT$</span>
+<br><span class='step-b-block'>Доставка:</span><span class='step-b-cost ic'><?if($ORDER_TAX$)?>$ORDER_TAX$<?else?>0р<?endif?> <span style='font-family:Think3; color:#999; font-size:12px;'>(<? int $ORDER_WEIGHT$/1000 ?> кг.)</span></span>
+<?if($ORDER_DISCOUNT_RAW$<0)?><br><span class='step-b-block'>Скидка:</span><span class='step-b-cost ic' style="color:green">$ORDER_DISCOUNT$</span><?endif?>
+<?if($ORDER_DISCOUNT_RAW$>0)?><br><span class='step-b-block'>Наценка:</span><span class='step-b-cost ic' style="color:#CE0000">$ORDER_DISCOUNT$</span><?endif?>
+<br>
+
+<div class='comiss_block' style='display:none'><br><span class='step-b-block'><font color=#CE0000>Комиссии за оплату<br>при получении</font> <span get='$GLOBAL_PCOMISS$' param='width:450' class="question">?</span>:</span><span class='c-comiss-raw step-b-cost ic' style="color:#CE0000"></span></div>
+
+<br><br>
+<b class='step-b-block'>Сумма к оплате:</b><br>
+<span class='step-b-cost1 ic pred_summ len-<?len($ORDER_TOPAY_RAW$)?>'>$ORDER_TOPAY_CURR$</span>
+<span class='step-b-cost1 ic comiss_summ' style='display:none'><span class='c-total-raw'></span></span>
+
+<?if($ORDER_AMOUNT_RAW$<$ORDER_TAX_RAW$)?>
+<div class='yellow-warning'>Сумма доставки превышает стоимость<br>товаров. Ничего страшного?</div>
+<?endif?>
+
+</div>
+</tr></table>
+
+<a target=_blank href='/faq/2-1#18' class="step-help"><span class=question>?</span> Об уведомлениях</a>
+<div class="step-h">Шаг 4. Служба уведомлений</div>
+<div class="step-b step4">
+<table class='adaptive'><tr>
+<td style="padding-right:10px;" width=270>
+<span class='order-name' style='width:140px;'>E-mail</span><span class='order-field'>$ORDER_FIELD_7$</span><br>
+<span class='order-name' style='width:140px;'>Мобильный телефон<a hint='<b>Номер мобильного телефона в международном формате</b><br><br>Например: 79824644241<br>На указанный номер будут отправляться СМС-уведомления.'>?</a></span><span class='order-field'>$ORDER_FIELD_1$</span>
+
+<td style="padding-left:10px;" valign=bottom>
+Укажите здесь свой реальный E-mail и номер мобильного телефона.<br>
+В процессе работы Вы будете получать на них уведомления о состоянии заказа.
+<div style='font-size:13px; font-weight:bold; color:#8E4B4B; margin:5px 0 0 0'>Заполняйте эти поля очень внимательно!</div>
+
+</tr></table>
+</div>
+
+<div class="step-h">Шаг 5. Получатель</div>
+
+<table style="margin:0 0 15px 0; width:100%;" cellspacing=0 class='adaptive'><tr>
+<td class="step-b step51" width=45%>
+<h3 style="margin:0">Кому</h3>
+
+<span class='order-name'>Фамилия</span><span class='order-field' >$ORDER_FIELD_4$</span><br>
+<span class='order-name'>Имя</span><span class='order-field'>$ORDER_FIELD_11$</span><br>
+<span class='order-name'>Отчество</span><span class='order-field'>$ORDER_FIELD_12$</span><br>
+<br>
+Для получения посылки на почте необходим ПАСПОРТ
+
+<td width=5>
+<td class="step-b step52">
+<h3 style="margin:0 0 0 0">Куда</h3>
+<div id='no_script_calc'>
+<span class='order-name'>Индекс <a hint='<b>Почтовый индекс</b><br><br>Индекс почтового отделения получателя. Для России - 6 цифр, для других стран может составлять 5 цифр или менее. <br><br><b>Неправильно введенный индекс может увеличить срок доставки.</b>'>?</a></span><span class='order-field index-field'>$ORDER_FIELD_3$ <a target=_blank style='font-size:12px; font-weight:normal' href='//www.ruspostindex.ru/'>Узнать индекс</a></span><br>
+<span class='order-name'>Страна</span><span class='order-field'>$ORDER_FIELD_10$</span><br>
+<span class='order-name'>Область <a hint='<b>Название области/края/республики</b><br><br>Например: Пермский край, Московская обл.'>?</a></span><span class='order-field'>$ORDER_FIELD_9$</span><br>
+$ORDER_FIELD_13$<span class='order-field'>$ORDER_FIELD_8$</span><br>
+</div>
+<div id='script_calc_addr' style='display:none'>Укажите адрес в способе доставки</div>
+<div id='no_script_calc_addr'>
+$ORDER_FIELD_16$<span class='order-field'>$ORDER_FIELD_2$<nobr>д.$ORDER_FIELD_18$кв.$ORDER_FIELD_19$</nobr></span>
+</div>
+</tr></table>
+
+
+<div id='duty-field'>$ORDER_FIELD_15$</div>
+
+$ORDER_INFO$
+<div style='display:none'>$ORDER_FIELD_14$</div>
+<input type="hidden" name="mode" value="change" id="checkout-form-mode"/>
+<input type="hidden" name="ssid" id="checkout-form-ssid" value="$SSID$"/>
+<input type="hidden" name="payment_id" value="<?max(1,$PAYMENT_ID$)?>" id="payment_id"/>
+<input type="hidden" name="delivery_id" value="<?max(1,$DELIVERY_ID$)?>" id="delivery_id"/>
+</form>
+
+<div id='invoices-warn2'></div>
+
+
+
+<table id='submit-table' style='display:none;width:100%'><tr>
+ <td width=33%>
+ <td width=34%><div id="order-submit">$ORDER_BUTTON$</div> 
+ <td width=33%> <div style='font-size:12px; color:#666; text-align:right'>
+ Не получается оформить? <a target=_blank href='/contacts'>Свяжитесь с нами</a><br>
+ <a target=_blank href='/faq/2-1#12'>Что делать при ошибках?</a>
+</div>
+</tr></table>
+
+<div class='no-js'>
+<img src="/img/icons/error-white.png"><h2>Выключен JavaScript</h2>Включите JavaScript в браузере, чтобы продолжить оформление заказа.
+</div>
+
+<!-- <модули доставки> -->
+<script>
+ var all_weight = $ORDER_WEIGHT$;
+ var all_price = $ORDER_AMOUNT_RAW$;
+</script>
+<script src="/js/jquery-ui.min.js"></script>
+
+<!-- <СДЭК> -->
+<script>
+ $(function() {
+ if(!$("#delivery-cdek").length) return;
+ var label = $("#delivery-cdek").closest('tr').attr('id').split('-');
+ $.ajax({
+ url: '/php/cdek/init.php',
+ type: 'POST',
+ data: {delivery_id:label[2], weight: all_weight, price: all_price},
+ dataType: 'script'
+ })
+ });
+</script>
+<!-- </СДЭК> -->
+
+<!-- <Почта России> -->
+<!--[if lt IE 10]>
+<script type="text/javascript" src="/js/calc/jquery.xdomainrequest.min.js"></script>
+<![endif]-->
+
+<script type="text/javascript" src="/js/calc/jquery.suggestions.min.js"></script>
+<script type="text/javascript" src="/js/calc/postRF.min.js?1231"></script>
+<!-- </Почта России> -->
+
+<!-- </модули доставки> -->
+
+
+
+<?endif?>
+<?endif?>
+
+<?if($PAGE_ID$=='invoices' and $GROUP_ID$=='4')?><div style='float:right'>
+<a href='//ode.li/index/0-11' target=_blank>Список примечаний</a> / 
+<a href='//ode.li/index/0-12' target=_blank>Анкета</a>
+</div><?endif?>
+<?if($PAGE_SELECTOR$)?><div style="text-align:center; padding:10px;"><?$DRAW_BLOCK$('PAGE_SELECTOR','plist')?></div><?endif?>
+
+<!-- </body> -->
+
+</div></div>
+</tr></table>
+$GLOBAL_BFOOTER$
+</div>
+
+<script src="/js/invoices.js?&l=$USER_LOGGED_IN$&g=$GROUP_ID$"></script>
+<script>recalc_comiss($ORDER_TOPAY_RAW$);</script>
+
+
+<script>
+$('#invoices_buttons').hide();
+$('#invoice-form').hide();
+
+function inv_show() {
+if($("input[type='checkbox']:checked").length>0) {
+ //$('#invoices_buttons').show(200);
+ $('#invoice-form').show(200);
+ //$('.dfg').toggle();
+}}
+inv_show();
+$(window).click(function() { inv_show() });
+
+$(".header-search input[type='button']").val("►");
+
+
+$('#invoice-search-id').keyup(function() {
+ var val = $(this).val();
+ if($(this).val().length>0) {
+ $(".header-search input[type='button']").show();
+ $(".header-logo").css('opacity',0.2);
+ }
+ else {
+ $(".header-search input[type='button']").hide();
+ $(".header-logo").css('opacity',1);
+ }
+ 
+ var slen = $(this).val().length;
+
+ if(slen>=30) $(this).addClass('micro').removeClass('mini'); 
+ if(slen>=16 && slen<30) $(this).addClass('mini').removeClass('micro'); 
+ if(slen<16) $(this).removeClass('mini').removeClass('micro');
+
+ val = val.replace(/\./g,",");
+ $(this).val(val);
+ });
+
+</script>
